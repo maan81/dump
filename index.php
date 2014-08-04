@@ -1,7 +1,7 @@
 <?php
 	require_once("config.php");
 
-	$con = mysql_connect(localhost, $db_user, $db_pass);
+	$con = mysql_connect('localhost', $db_user, $db_pass);
 	mysql_select_db($db_name, $con);
 
 
@@ -42,11 +42,7 @@
 	while($row = mysql_fetch_assoc($res))
 
 	{
-
 		$links[] = '<a href="' . $row["redirecturl"] . '" target="_blank">' . $row["title"] . '</a>';
-
-
-
 	}
 
 	shuffle($links);
@@ -70,7 +66,5 @@
 	);
 
 	
-
 	mysql_close($con);
-
 ?>
