@@ -1,13 +1,8 @@
 <?php
-
 	require_once("config.php");
 
-
-
 	$con = mysql_connect(localhost, $db_user, $db_pass);
-
 	mysql_select_db($db_name, $con);
-
 
 
 	$p = isset($_GET["p"]) ? intval($_GET["p"]) : 1;
