@@ -1,8 +1,7 @@
 <?php
 	require_once("config.php");
 
-	$con = mysql_connect('localhost', $db_user, $db_pass);
-	mysql_select_db($db_name, $con);
+	$con = mysqli_connect('localhost', $db_user, $db_pass,$db_name);
 
 
 	$p = isset($_GET["p"]) ? intval($_GET["p"]) : 1;
@@ -35,15 +34,19 @@
 
 	}
 
-	$res = mysql_query("SELECT redirecturl, title FROM `products` LIMIT 100", $con);
+	// $res = mysqli_query($con,"SELECT redirecturl, title FROM `products` LIMIT 100");
+	$res = mysqli_query($con,"SELECT * FROM `products` LIMIT 100");
 
 	$links = array();
 
-	while($row = mysql_fetch_assoc($res))
+	while($row = mysqli_fetch_assoc($res))
 
 	{
-		$links[] = '<a href="' . $row["redirecturl"] . '" target="_blank">' . $row["title"] . '</a>';
+		// $links[] = '<a href="' . $row["redirecturl"] . '" target="_blank">' . $row["title"] . '</a>';
+		$links[] = '<a href="' . $row["buyurl"] . '" target="_blank">' . $row["name"] . '</a>';
 	}
+
+
 
 	shuffle($links);
 
@@ -51,20 +54,26 @@
 
 	$menu = implode("<br />", $links);
 
-	$res = mysql_query("SELECT * FROM `products` WHERE id = {$p}", $con);
+	$sql = "SELECT * FROM `products` WHERE productID = $p";
 
-	$row = mysql_fetch_assoc($res);
+	$res = mysqli_query($con, $sql);
 
-	echo str_replace(
+	$row = mysqli_fetch_assoc($res);
 
-		array("%title%", "%image%", "%redirecturl%", "%menu%"),
+	// echo str_replace(
 
-		array($row["title"], $row["image"], $row["redirecturl"], $menu),
+	// 	array("%title%", "%image%", "%redirecturl%", "%menu%"),
 
-		file_get_contents($valid_referer ? "../sitetemplate/template2.html" : "../sitetemplate/template.html")
+	// 	// array($row["title"], $row["image"], $row["redirecturl"], $menu),
+	// 	array($row["title"], $row["imageurl"], $row["buyurl"], $menu),
 
-	);
+	// 	// file_get_contents($valid_referer ? "../sitetemplate/template2.html" : "../sitetemplate/template.html")
+	// 	file_get_contents("template.html")
+
+	// );
 
 	
-	mysql_close($con);
+	mysqli_close($con);
+
+	include('template.php');
 ?>
